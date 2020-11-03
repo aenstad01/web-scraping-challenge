@@ -4,35 +4,40 @@ from bs4 import BeautifulSoup as bs
 import requests
 import pymongo
 import pandas as pd
-
+import time
 
 def init_browser():
+
     #Set up the ChromeDriver
-    executable_path = {'executable_path': 'chromedriver.exe'}
+    executable_path = {'executable_path': 'C:/bin/chromedriver'}
+    
     browser = Browser('chrome', **executable_path, headless=False)
     return browser
 
-# Create a dictionary from the scraped data
 def scrape():
     browser = init_browser()
-    mars_data = {}
+    listings  = {}
 
-    #URL that will be scraped
+    #here's the url we want to scrape
     url = 'https://mars.nasa.gov/news/'
-    response = requests.get(url)
-    soup = bs(response.text, 'html.parser')
+
+    browser.visit(url)
+
+    #wait 5 seconds to ensure the scraper has enough time to find the title & paragraph
+    time.sleep(5)
+    html = browser.html
+    soup= bs(html, 'html.parser')
 
     try:
         step1 = soup.select_one("ul.item_list li.slide")
-        news_title = step1.find("div", class_='content_title').text
-
-        news_p = step1.find("div", class_='article_teaser_body').text
+        news_title = step1.find("div", class_='content_title').get_text()
+        news_p = step1.find("div", class_='article_teaser_body').get_text()
+        listings["news_title"] = news_title
+        listings["news_p"] = news_p
     
     except:
         print("Title not found")
 
-    mars_data["news_title"] = news_title
-    mars_data["news_p"] = news_p
 
 #Featured image
     image_url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
@@ -44,8 +49,6 @@ def scrape():
     image_soup = bs(image_html, 'html.parser')
     featured_image = image_soup.body.find("figure", class_="lede")
 
-    # The a tag on the image contains the url without the base url included
-
     # Define the Base URL
     base_url='https://www.jpl.nasa.gov'
 
@@ -55,7 +58,7 @@ def scrape():
     # Combine both parts of the url to create the full url
     featured_image_url = base_url + href
 
-    mars_data["featured_image_url"] = featured_image_url
+    listings["featured_image_url"] = featured_image_url
 
 #Mars Facts Table
     #URL to scrape:
@@ -65,9 +68,9 @@ def scrape():
     facts_df = pd.read_html(mars_facts_url)[0]
     facts_df.columns = ["Description", "Value"]
     mars_facts_html = facts_df.to_html()
-    mars_data["mars_facts_html"] = mars_facts_html
+    listings["mars_facts_html"] = mars_facts_html
 
-#hemispheres
+#Hemispheres
     #Define the starting point url
     hemispheres_url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
 
@@ -86,16 +89,20 @@ def scrape():
     img_url = []
 
 
-    #SoupLoop
+    #SoupLoop for images
     for x in browser_htmls:
         soup = bs(x, 'html.parser')
         hemisphere = soup.body.find('img', class_ = 'wide-image')
         image = hemisphere['src']
         hemisphere_url = base_url + image
         img_url.append(hemisphere_url)
+
         hemisphere_image_urls = dict(zip(hemispheres, img_url))
-        mars_data["hemisphere_image_urls"] = hemisphere_image_urls
+        listings["hemisphere_image_urls"] = hemisphere_image_urls
 
-    return mars_data
+    listings["img_url"] = img_url
+    listings["hemispheres"] = hemispheres
 
-
+    return listings
+    
+# End of scraping

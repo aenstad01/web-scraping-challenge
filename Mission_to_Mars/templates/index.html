@@ -2,20 +2,28 @@
 <html>
 
 <head>
-  <title>Mission to Mars</title>
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Mission to Mars</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- CSS section -->
+    <style>
+    </style>
+
+
+
 </head>
 
 <body>
-  <div class="container">
+    <!-- <div class="container"> -->
 
     <!-- Jumbotron -->
     <div class="jumbotron text-center">
-      <h1 class="display-4;">Mission to Mars</h1>
-      <a class="btn btn-lg text-white" style="background-color: blue;" href="/scrape" role="button">Scrape New
-        Data</a>
+        <h1 class="display-4;">Mission to Mars</h1>
+        <a class="btn btn-lg text-white" style="background-color: blue;" href="/scrape" role="button">Scrape New
+            Data</a>
     </div>
 
     <!---Latest News-->
@@ -23,7 +31,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h4> {{listings.news_title}} </h4>
+                <h4> {{ listings.news_title }} </h4>
                 <p>{{listings.news_p}}</p>
             </div>
         </div>
@@ -31,49 +39,83 @@
 
     <!-- Featured Image -->
     <div class="container">
-        <div class='row'>
-            <div class='col-md-7'>
+        <div class="row">
+            <div class="col-md-7">
                 <h2>Featured Mars Image</h2>
+                <div class="card text-white bg-dark" style="margin: 30px;">
+                    <img class="card-img-top" src="{{listings.featured_image_url}}">
+                </div>
             </div>
 
-            <div class='col-md 5'>
+            <div class="col-md 5">
                 <h3>Mars Facts Table</h3>
-                {{listings.mars_facts_html}}
+
+                <table class="table table-striped">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        {{listings.mars_facts_html|safe}}
+                    </tbody>
+                </table>
             </div>
         </div>
-      </div>
-
-
-    <h2>Mars Hemispheres</h2>
+    </div>
 
     <div class="container">
-        <div class='row'>
-            <div class='col-md-6'>
-                Image
-                <img src=""/>
+        <h2>Mars Hemispheres</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-white bg-dark" style="margin: 30px;">
+                    <img class="card-img-top" src="{{ listings.img_url[0] }}">
+                    <div class="card-body">
+                        <p>{{ listings.hemispheres[0] }} Hemisphere Enhanced</p>
+                    </div>
+                </div>
             </div>
 
-            <div class='col-md 6'>
-                Image
-                <img src=""/>
-            </div>
-        </div>
-        <div class='row'>
-            <div class='col-md-6'>
-                Image
-                <img src=""/>
-            </div>
-
-            <div class='col-md 6'>
-                Image
-                <img src=""/>
+            <div class="col-md-6">
+                <div class="card text-white bg-dark" style="margin: 30px;">
+                    <img class="card-img-top" src="{{ listings.img_url[1] }}">
+                    <div class="card-body">
+                        <p>{{ listings.hemispheres[1] }} Hemisphere Enhanced</p>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-white bg-dark" style="margin: 30px;">
+                    <img class="card-img-top" src="{{ listings.img_url[2] }}">
+                    <div class="card-body">
+                        <p>{{ listings.hemispheres[2] }} Hemisphere Enhanced</p>
+                    </div>
+                </div>
+            </div>
 
-      </div>
+            <div class="col-md-6">
+                <div class="card text-white bg-dark" style="margin: 30px;">
+                    <img class="card-img-top" src="{{ listings.img_url[3] }}">
+                    <div class="card-body">
+                        <p>{{ listings.hemispheres[3] }} Hemisphere Enhanced</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
- 
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script> -->
+
 </body>
 
 </html>
